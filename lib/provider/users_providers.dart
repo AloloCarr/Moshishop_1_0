@@ -33,7 +33,7 @@ class UserProvider extends ChangeNotifier {
       final preference = await SharedPreferences.getInstance();
       preference.setString('token', userToken);
 
-      print(userToken);
+      print('token: $userToken' );
       if (context.mounted) {
         userFound = true;
         ScaffoldMessenger.of(context).showSnackBar(
