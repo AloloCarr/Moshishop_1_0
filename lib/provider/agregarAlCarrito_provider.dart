@@ -1,24 +1,20 @@
-// ignore_for_file: file_names
+// ignore_for_file: non_constant_identifier_names, file_names
 
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-void main() => runApp(const MyApp());
+import 'package:http/http.dart' as http;
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+Future<void> agregarAlcarrito(
+    String ProductoCodigo, String quantity, String pay) async {
+  final response = await http.post(
+    Uri(),
+    headers: {'Content-Type': 'application/json'},
+    body: json.encode(
+      {'ProductoCodigo': ProductoCodigo, 'quantity': quantity, 'pay': ''},
+    ),
+  );
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Material App Bar'),
-        ),
-        body: const Center(
-          child: Text('Hello World'),
-        ),
-      ),
-    );
+  if (response.statusCode != 200) {
+    throw Exception('Error al agregar el producto al carrito :(');
   }
 }
