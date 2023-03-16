@@ -29,7 +29,7 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   Future<void> loadUser() async {
-    final user = await getUserEmail('palmaalonzokarelyguadalupe@gmail.com');
+    final user = await getUserEmail('');
     setState(() {
       _user = user;
     });

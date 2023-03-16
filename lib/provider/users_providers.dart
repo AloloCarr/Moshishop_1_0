@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -40,7 +42,7 @@ class UserProvider extends ChangeNotifier {
             const SnackBar(content: Text('Bienvenido a Moshishop')));
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (BuildContext context) => NavDrawer()),
+          MaterialPageRoute(builder: (BuildContext context) => const NavDrawer()),
         );
       }
     } else {

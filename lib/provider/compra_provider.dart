@@ -31,6 +31,7 @@ class _ProductosPageState extends State<ProductosPage> {
         Uri.parse('https://moshishop.up.railway.app/compras/agregar'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          
         },
         body: jsonEncode(<String, dynamic>{
           'unidades': unidades,
