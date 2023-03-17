@@ -79,8 +79,7 @@ class _SingUpFormState extends State<SingUpForm> {
               ),
               const SizedBox(height: 10),
               Form(
-                                key: formkey,
-
+                key: formkey,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   children: [
@@ -198,15 +197,14 @@ class _SingUpFormState extends State<SingUpForm> {
                   ),
                 ),
                 onPressed: () {
-                   if(formkey.currentState!.validate()){
+                  if (formkey.currentState!.validate()) {
                     context.read<UserProvider>().singUpUser(
-                      nameController.text,
-                      emailController.text,
-                      passwordController.text,
-                      phoneNumberController.text,
-                      adressController.text,
-                      context
-                    );
+                        nameController.text,
+                        emailController.text,
+                        passwordController.text,
+                        phoneNumberController.text,
+                        adressController.text,
+                        context);
                   }
                 },
               )

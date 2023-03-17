@@ -73,16 +73,19 @@ class UserProvider extends ChangeNotifier {
       body: jsonEncode(singupUser),
     );
 
+    print(response.statusCode);
+
     if (response.statusCode == 200) {
       if (context.mounted) {
         userFound = true;
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Registro Exitoso')));
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Registro Exitoso')));
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (BuildContext context) => const LoginScreen()),
         );
+        print("registro completado con exito");
       }
     } else {
       if (context.mounted) {
