@@ -9,13 +9,15 @@ class LoginForm extends StatefulWidget {
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
+
 class _LoginFormState extends State<LoginForm> {
   bool isSecurePassword = true;
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
   final formkey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final userInfo = Provider.of<UserProvider>(context);
     return Column(
       children: [
         const SizedBox(
@@ -143,12 +145,10 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
                 onPressed: () {
-                  if(formkey.currentState!.validate()){
-                    context.read<UserProvider>().loginUser(
-                      emailController.text,
-                      passwordController.text,
-                      context
-                    );
+                  if (formkey.currentState!.validate()) {
+                    userInfo.correo = emailController.text;
+                    userInfo.password = passwordController.text;
+                    userInfo.loginUser(context);
                   }
                 },
               )
@@ -177,5 +177,3 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 }
-    
-

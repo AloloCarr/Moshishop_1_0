@@ -1,7 +1,10 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'dart:convert';
 
 UserSingUpDto userSingUpDtoFromJson(String str) =>
 UserSingUpDto.fromJson(json.decode(str));
+
 
 class UserSingUpDto {
  
@@ -30,6 +33,7 @@ class UserSingUpDto {
       Direccion: json['Direccion']
     );
   }
+
 
   Map<String, dynamic> toJson() {
     return {

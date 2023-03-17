@@ -9,6 +9,8 @@ class Perfil extends StatefulWidget {
 
   const Perfil({super.key, required this.customerCorreo});
 
+  get isLoading => true;
+
   @override
   _PerfilState createState() => _PerfilState();
 }

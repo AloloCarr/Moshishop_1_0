@@ -1,159 +1,164 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, use_key_in_widget_constructors, library_private_types_in_public_api, sized_box_for_whitespace
+// ignore_for_file: prefer_const_constructors, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
-class UserScreen extends StatefulWidget {
-  @override
-  _UserScreenState createState() => _UserScreenState();
-}
+import 'package:moshi_movil_app/provider/users_providers.dart';
+import 'package:provider/provider.dart';
 
-class _UserScreenState extends State<UserScreen> {
-  Map<String, dynamic> _user = {};
-
-  Future<Map<String, dynamic>> getUserEmail(String correo) async {
-    final response = await http.get(Uri.parse(
-        'https://moshishop.up.railway.app/usuarios/buscaruser/$correo'));
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception('Failed to load user');
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loadUser();
-  }
-
-  Future<void> loadUser() async {
-    final user = await getUserEmail('');
-    setState(() {
-      _user = user;
-    });
-  }
+class PrefilPage extends StatelessWidget {
+  const PrefilPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final userInfo = Provider.of<UserProvider>(context);
     return Scaffold(
-      body: Center(
-        child: _user.isNotEmpty
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: const CircleAvatar(
-                        backgroundImage: NetworkImage(''), radius: 100),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // acción al presionar el botón
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors
-                            .deepPurpleAccent, // Establece el color de fondo
-                      ),
-                      child: Text('Editar Foto'),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    alignment: Alignment.topLeft,
-                    child: Text('Usuario:'),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          '${_user['nombre']}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+      body: Consumer<UserProvider>(
+          builder: (context, loginUser, child) => loginUser.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Center(
+                  child: Column(
+                    children: [
+                      Column(children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: CircleAvatar(
+                            backgroundColor: Color.fromARGB(255, 220, 146, 234),
+                            radius: 100,
+                            child: ClipOval(
+                              child: Image.asset(
+                                'assets/img/logo.png',
+                                fit: BoxFit.cover,
+                                height: 350,
+                                width: 350,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    alignment: Alignment.topLeft,
-                    child: Text('Correo Electronico: '),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          '${_user['correo']}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // acción al presionar el botón
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors
+                                  .deepPurpleAccent, // Establece el color de fondo
+                            ),
+                            child: Text('Editar Foto'),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    alignment: Alignment.topLeft,
-                    child: Text('Telefono: '),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child: Text(
-                          '${_user['telefono']}',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          alignment: Alignment.topLeft,
+                          child: Text('Usuario:'),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Text(
+                                userInfo.nombre,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                        SizedBox(height: 10),
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          alignment: Alignment.topLeft,
+                          child: Text('Correo Electronico: '),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Text(
+                                userInfo.correo,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          alignment: Alignment.topLeft,
+                          child: Text('Telefono: '),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Text(
+                                userInfo.telefono,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          alignment: Alignment.topLeft,
+                          child: Text('Correo Electronico: '),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Text(
+                                userInfo.Direccion,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // acción al presionar el botón
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors
+                                  .deepPurpleAccent, // Establece el color de fondo
+                            ),
+                            child: Text('Guardar Cambios'),
+                          ),
+                        ),
+                      ])
+                    ],
                   ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // acción al presionar el botón
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors
-                            .deepPurpleAccent, // Establece el color de fondo
-                      ),
-                      child: Text('Guardar Cambios'),
-                    ),
-                  ),
-                ],
-              )
-            : CircularProgressIndicator(),
-      ),
-      // floatingActionButton: FloatingActionButton(
-      // onPressed: loadUser,
-      // child: Icon(Icons.refresh),
-      // ),
+                )),
     );
   }
 }

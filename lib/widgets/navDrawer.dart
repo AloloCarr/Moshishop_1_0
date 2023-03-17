@@ -1,12 +1,14 @@
 // ignore_for_file: file_names, recursive_getters, prefer_final_fields
 
 import 'package:flutter/material.dart';
+import 'package:moshi_movil_app/provider/users_providers.dart';
 import 'package:moshi_movil_app/screens/carrito.dart';
 import 'package:moshi_movil_app/screens/configuracion.dart';
 import 'package:moshi_movil_app/screens/favoritos.dart';
 import 'package:moshi_movil_app/screens/home_pages.dart';
 import 'package:moshi_movil_app/screens/login_screen.dart';
 import 'package:moshi_movil_app/screens/perfil.dart';
+import 'package:provider/provider.dart';
 
 class NavDrawer extends StatefulWidget {
   const NavDrawer({super.key});
@@ -26,7 +28,7 @@ class NavDraweState extends State<NavDrawer> {
       case 2:
         return const CarritoCompra();
       case 3:
-        return UserScreen();
+        return const PrefilPage();
       case 4:
         return const SettingsPage();
       case 5:
@@ -43,6 +45,8 @@ class NavDraweState extends State<NavDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final userInfo = Provider.of<UserProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('MOSHISHOP'),
