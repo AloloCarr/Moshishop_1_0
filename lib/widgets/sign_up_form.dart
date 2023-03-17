@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:moshi_movil_app/provider/users_providers.dart';
 import 'package:moshi_movil_app/screens/home_screen.dart';
 import 'package:moshi_movil_app/screens/login_screen.dart';
+import 'package:provider/provider.dart';
 
 class SingUpForm extends StatefulWidget {
   const SingUpForm({
@@ -14,6 +16,11 @@ class SingUpForm extends StatefulWidget {
 class _SingUpFormState extends State<SingUpForm> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController adressController = TextEditingController();
+  final formkey = GlobalKey<FormState>();
+
   bool isSecurePassword = true;
   @override
   Widget build(BuildContext context) {
@@ -72,11 +79,13 @@ class _SingUpFormState extends State<SingUpForm> {
               ),
               const SizedBox(height: 10),
               Form(
+                key: formkey,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Column(
                   children: [
                     TextFormField(
                       autocorrect: false,
+                      controller: nameController,
                       decoration: const InputDecoration(
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.deepPurple),
@@ -140,6 +149,7 @@ class _SingUpFormState extends State<SingUpForm> {
                     const SizedBox(height: 10),
                     TextFormField(
                       autocorrect: false,
+                      controller: phoneNumberController,
                       keyboardType: TextInputType.phone,
                       decoration: const InputDecoration(
                           enabledBorder: UnderlineInputBorder(
@@ -156,6 +166,7 @@ class _SingUpFormState extends State<SingUpForm> {
                     const SizedBox(height: 10),
                     TextFormField(
                       autocorrect: false,
+                      controller: adressController,
                       decoration: const InputDecoration(
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.deepPurple),
@@ -186,10 +197,15 @@ class _SingUpFormState extends State<SingUpForm> {
                   ),
                 ),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomeScreen()),
-                  );
+                  if (formkey.currentState!.validate()) {
+                    context.read<UserProvider>().singUpUser(
+                        nameController.text,
+                        emailController.text,
+                        passwordController.text,
+                        phoneNumberController.text,
+                        adressController.text,
+                        context);
+                  }
                 },
               )
             ],
