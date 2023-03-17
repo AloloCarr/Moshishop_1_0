@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 Future<void> agregarAlcarrito(
     String ProductoCodigo, String quantity, String pay) async {
   final response = await http.post(
-    Uri(),
+    Uri.parse('https://moshishop.up.railway.app/cart/agregar'),
     headers: {'Content-Type': 'application/json'},
     body: json.encode(
       {'ProductoCodigo': ProductoCodigo, 'quantity': quantity, 'pay': ''},
