@@ -6,51 +6,60 @@
 
 import 'dart:convert';
 
-ProductosReponseDtos productosReponseDtosFromJson(String str) => ProductosReponseDtos.fromJson(json.decode(str));
+ProductosReponseDtos productosReponseDtosFromJson(String str) =>
+    ProductosReponseDtos.fromJson(json.decode(str));
 
-String productosReponseDtosToJson(ProductosReponseDtos data) => json.encode(data.toJson());
+String productosReponseDtosToJson(ProductosReponseDtos data) =>
+    json.encode(data.toJson());
 
 class ProductosReponseDtos {
-    ProductosReponseDtos({
-        required this.id,
-        required this.nombre,
-        required this.cantidad,
-        required this.precio,
-        required this.codigo,
-        required this.categoriaNombre,
-    });
+  ProductosReponseDtos(
+      {required this.id,
+      required this.nombre,
+      required this.cantidad,
+      required this.precio,
+      required this.codigo,
+      required this.categoriaNombre,
+      required this.imagen
+      });
 
-    final String id;
-    final String nombre;
-    final int cantidad;
-    final String precio;
-    final String codigo;
-    final String categoriaNombre;
+  final String id;
+  final String nombre;
+  final int cantidad;
+  final String precio;
+  final String codigo;
+  final String categoriaNombre;
+  final String imagen;
 
-    factory ProductosReponseDtos.fromMap(Map<String, dynamic> json) => ProductosReponseDtos(
+  factory ProductosReponseDtos.fromMap(Map<String, dynamic> json) =>
+      ProductosReponseDtos(
         id: json["id"],
         nombre: json["nombre"],
         cantidad: json["cantidad"],
         precio: json["precio"],
         codigo: json["codigo"],
         categoriaNombre: json["CategoriaNombre"],
-    );
+        imagen: json["imagen"]
+      );
 
-    factory ProductosReponseDtos.fromJson(Map<String, dynamic> json) => ProductosReponseDtos(
+  factory ProductosReponseDtos.fromJson(Map<String, dynamic> json) =>
+      ProductosReponseDtos(
         id: json["id"],
         nombre: json["nombre"],
         cantidad: json["cantidad"],
         precio: json["precio"],
         codigo: json["codigo"],
         categoriaNombre: json["CategoriaNombre"],
-    );
+         imagen: json["imagen"]
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "nombre": nombre,
         "cantidad": cantidad,
         "precio": precio,
         "codigo": codigo,
         "CategoriaNombre": categoriaNombre,
-    };
+        "imagen": imagen
+      };
 }

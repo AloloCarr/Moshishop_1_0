@@ -40,7 +40,7 @@ class UserProvider extends ChangeNotifier {
   bool isLoading = true;
   bool userFound = false;
   UserLoginDto? get user => _user;
-Future loginUser(BuildContext context) async {
+  Future loginUser(BuildContext context) async {
     if (_correo != '' && _password != '') {
       final response = await http.post(
           Uri.parse('https://moshishop.up.railway.app/usuarios/login'),
@@ -54,6 +54,7 @@ Future loginUser(BuildContext context) async {
       if (response.statusCode == 200) {
         final userToken = jsonDecode(response.body)[0];
         final preference = await SharedPreferences.getInstance();
+        final token = preference.getString('token');
         preference.setString('token', userToken);
         isLoading = false;
         _correo = jsonDecode(response.body)[1]['correo'];
@@ -62,10 +63,8 @@ Future loginUser(BuildContext context) async {
         _telefono = jsonDecode(response.body)[1]['telefono'];
         _Direccion = jsonDecode(response.body)[1]['Direccion'];
 
-
-
-
         print('token: $userToken');
+        print('$token');
         print(response);
         print(correo);
         print(_correo);
@@ -73,11 +72,8 @@ Future loginUser(BuildContext context) async {
           userFound = true;
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Bienvenido a Moshishop')));
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: ((context) => const NavDrawer()))
-          );
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: ((context) => const NavDrawer())));
         }
       } else {
         if (context.mounted) {
@@ -85,79 +81,80 @@ Future loginUser(BuildContext context) async {
               .showSnackBar(const SnackBar(content: Text('error')));
         }
 
-    final response = await http.post(
-        Uri.parse('https://moshishop.up.railway.app/usuarios/login'),
-        headers: <String, String>{
-          'Content-type': 'application/json; charset=UTF-8'
-        },
-        body: jsonEncode(user));
+        final response = await http.post(
+            Uri.parse('https://moshishop.up.railway.app/usuarios/login'),
+            headers: <String, String>{
+              'Content-type': 'application/json; charset=UTF-8'
+            },
+            body: jsonEncode(user));
 
-    print(response.statusCode);
+        print(response.statusCode);
 
-    if (response.statusCode == 200) {
-      final userToken = jsonDecode(response.body)[0];
-      final preference = await SharedPreferences.getInstance();
-      preference.setString('token', userToken);
+        if (response.statusCode == 200) {
+          final userToken = jsonDecode(response.body)[0];
+          final preference = await SharedPreferences.getInstance();
+          preference.setString('token', userToken);
 
-      print('token: $userToken');
-      if (context.mounted) {
-        userFound = true;
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Bienvenido a Moshishop')));
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => const NavDrawer()),
-        );
+          print('token: $userToken');
+          if (context.mounted) {
+            userFound = true;
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Bienvenido a Moshishop')));
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const NavDrawer()),
+            );
+          }
+        } else {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text('error')));
+          }
+        }
       }
-    } else {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('error')));
 
+      Future singUpUser(String nombre, String correo, String password,
+          String telefono, String Direccion, BuildContext context) async {
+        final singupUser = UserSingUpDto(
+            nombre: nombre,
+            correo: correo,
+            password: password,
+            telefono: telefono,
+            Direccion: Direccion);
+
+        final response = await http.post(
+          Uri.parse('https://moshishop.up.railway.app/usuarios/registro'),
+          headers: <String, String>{
+            'Content-type': 'application/json; charset=UTF-8'
+          },
+          body: jsonEncode(singupUser),
+        );
+
+        print(response.statusCode);
+
+        if (response.statusCode == 200) {
+          if (context.mounted) {
+            userFound = true;
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Registro Exitoso')));
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const LoginScreen()),
+            );
+            print("registro completado con exito");
+          }
+        } else {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text('error')));
+          }
+        }
       }
     }
   }
 
-  Future singUpUser(String nombre, String correo, String password,
-      String telefono, String Direccion, BuildContext context) async {
-    final singupUser = UserSingUpDto(
-        nombre: nombre,
-        correo: correo,
-        password: password,
-        telefono: telefono,
-        Direccion: Direccion);
-
-    final response = await http.post(
-      Uri.parse('https://moshishop.up.railway.app/usuarios/registro'),
-      headers: <String, String>{
-        'Content-type': 'application/json; charset=UTF-8'
-      },
-      body: jsonEncode(singupUser),
-    );
-
-    print(response.statusCode);
-
-    if (response.statusCode == 200) {
-      if (context.mounted) {
-        userFound = true;
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('Registro Exitoso')));
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => const LoginScreen()),
-        );
-        print("registro completado con exito");
-      }
-    } else {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('error')));
-      }
-    }
-  }
+  void singUpUser(String text, String text2, String text3, String text4,
+      String text5, BuildContext context) {}
 }
-}
-
-  void singUpUser(String text, String text2, String text3, String text4, String text5, BuildContext context) {}}
