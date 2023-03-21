@@ -111,7 +111,7 @@ class _SingUpFormState extends State<SingUpForm> {
                                 BorderSide(color: Colors.deepPurple, width: 2),
                           ),
                           hintText: 'Usuario@Example.com',
-                          labelText: 'Correo Electronico',
+                          labelText: 'Correo Electrónico',
                           prefixIcon: Icon(Icons.mail_outlined)),
                       validator: (value) {
                         String pattern =
@@ -159,12 +159,12 @@ class _SingUpFormState extends State<SingUpForm> {
                                 BorderSide(color: Colors.deepPurple, width: 2),
                           ),
                           hintText: '999-999-9999',
-                          labelText: 'Numero Telefonico',
+                          labelText: 'Numero Telefónico',
                           prefixIcon: Icon(Icons.phone_iphone_outlined)),
                       validator: (value) {
                         return (value != null && value.length >= 10)
                             ? null
-                            : 'El numero telefonico debe ser mayor o igual a los 10 caracteres';
+                            : 'El numero telefónico debe ser mayor o igual a los 10 caracteres';
                       },
                     ),
                     const SizedBox(height: 10),

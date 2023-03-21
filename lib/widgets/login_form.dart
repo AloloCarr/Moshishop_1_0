@@ -89,7 +89,7 @@ class _LoginFormState extends State<LoginForm> {
                                 BorderSide(color: Colors.deepPurple, width: 2),
                           ),
                           hintText: 'Usuario@Example.com',
-                          labelText: 'Correo Electronico',
+                          labelText: 'Correo Electrónico',
                           prefixIcon: Icon(Icons.mail_outline)),
                       validator: (value) {
                         String pattern =
