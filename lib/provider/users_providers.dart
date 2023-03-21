@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:moshi_movil_app/models/user_login_dto.dart';
 import 'package:moshi_movil_app/models/user_sing_up_dto.dart';
-import 'package:moshi_movil_app/screens/home_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:moshi_movil_app/screens/login_screen.dart';
 import 'package:moshi_movil_app/widgets/navDrawer.dart';
@@ -40,6 +39,7 @@ class UserProvider extends ChangeNotifier {
   bool isLoading = true;
   bool userFound = false;
   UserLoginDto? get user => _user;
+
   Future loginUser(BuildContext context) async {
     if (_correo != '' && _password != '') {
       final response = await http.post(

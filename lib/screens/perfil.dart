@@ -74,7 +74,7 @@ class PrefilPage extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.all(10),
                           alignment: Alignment.topLeft,
-                          child: Text('Correo Electronico: '),
+                          child: Text('Correo Electrónico: '),
                         ),
                         Container(
                           width: double.infinity,
@@ -98,7 +98,7 @@ class PrefilPage extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.all(10),
                           alignment: Alignment.topLeft,
-                          child: Text('Telefono: '),
+                          child: Text('Teléfono: '),
                         ),
                         Container(
                           width: double.infinity,
@@ -122,7 +122,7 @@ class PrefilPage extends StatelessWidget {
                         Container(
                           margin: EdgeInsets.all(10),
                           alignment: Alignment.topLeft,
-                          child: Text('Correo Electronico: '),
+                          child: Text('Dirección: '),
                         ),
                         Container(
                           width: double.infinity,
