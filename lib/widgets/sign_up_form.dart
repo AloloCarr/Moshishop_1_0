@@ -161,6 +161,11 @@ class _SingUpFormState extends State<SingUpForm> {
                           hintText: '999-999-9999',
                           labelText: 'Numero Telefonico',
                           prefixIcon: Icon(Icons.phone_iphone_outlined)),
+                      validator: (value) {
+                        return (value != null && value.length >= 10)
+                            ? null
+                            : 'El numero telefonico debe ser mayor o igual a los 10 caracteres';
+                      },
                     ),
                     const SizedBox(height: 10),
                     TextFormField(

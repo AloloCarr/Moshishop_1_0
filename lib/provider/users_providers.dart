@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:moshi_movil_app/models/user_login_dto.dart';
 import 'package:moshi_movil_app/models/user_sing_up_dto.dart';
-import 'package:moshi_movil_app/screens/home_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:moshi_movil_app/screens/login_screen.dart';
 import 'package:moshi_movil_app/widgets/navDrawer.dart';
@@ -40,7 +39,8 @@ class UserProvider extends ChangeNotifier {
   bool isLoading = true;
   bool userFound = false;
   UserLoginDto? get user => _user;
-Future loginUser(BuildContext context) async {
+
+  Future loginUser(BuildContext context) async {
     if (_correo != '' && _password != '') {
       final response = await http.post(
           Uri.parse('https://moshishop.up.railway.app/usuarios/login'),
@@ -61,10 +61,6 @@ Future loginUser(BuildContext context) async {
         _nombre = jsonDecode(response.body)[1]['nombre'];
         _telefono = jsonDecode(response.body)[1]['telefono'];
         _Direccion = jsonDecode(response.body)[1]['Direccion'];
-
-
-
-
         print('token: $userToken');
         print(response);
         print(correo);
@@ -73,48 +69,14 @@ Future loginUser(BuildContext context) async {
           userFound = true;
           ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Bienvenido a Moshishop')));
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: ((context) => const NavDrawer()))
-          );
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: ((context) => const NavDrawer())));
         }
       } else {
         if (context.mounted) {
           ScaffoldMessenger.of(context)
               .showSnackBar(const SnackBar(content: Text('error')));
         }
-
-    final response = await http.post(
-        Uri.parse('https://moshishop.up.railway.app/usuarios/login'),
-        headers: <String, String>{
-          'Content-type': 'application/json; charset=UTF-8'
-        },
-        body: jsonEncode(user));
-
-    print(response.statusCode);
-
-    if (response.statusCode == 200) {
-      final userToken = jsonDecode(response.body)[0];
-      final preference = await SharedPreferences.getInstance();
-      preference.setString('token', userToken);
-
-      print('token: $userToken');
-      if (context.mounted) {
-        userFound = true;
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Bienvenido a Moshishop')));
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => const NavDrawer()),
-        );
-      }
-    } else {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('error')));
-
       }
     }
   }
@@ -158,6 +120,3 @@ Future loginUser(BuildContext context) async {
     }
   }
 }
-}
-
-  void singUpUser(String text, String text2, String text3, String text4, String text5, BuildContext context) {}}
