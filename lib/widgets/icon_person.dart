@@ -10,11 +10,15 @@ class IconPerson extends StatelessWidget {
   Widget build(BuildContext context) {
     SizeConfig(context);
     return SafeArea(
-      child: Container(
-        height:SizeConfig.safeBlockSizeHorizontal(20) ,
-        width: SizeConfig.screenWidth,
-        child: Image.asset('assets/img/logo.png' )
-        ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: SizedBox(
+          height:SizeConfig.safeBlockSizeHorizontal(60) ,
+          width: SizeConfig.screenWidth,
+          child: Image.asset('assets/img/logo.png' )
+          ),
+      ),
+      
       );
   }
 }
