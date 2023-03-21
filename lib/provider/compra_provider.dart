@@ -89,7 +89,7 @@ class _ProductosPageState extends State<ProductosPage> {
                       color: Colors.purple,
                       borderRadius: BorderRadius.circular(100),
                       image: DecorationImage(
-                        image: AssetImage('assets/img/logo.png'),
+                        image: NetworkImage('assets/img/logo.png'),
                       )),
                 ),
                 SizedBox(height: 30),

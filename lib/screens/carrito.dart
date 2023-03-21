@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:moshi_movil_app/provider/productos_provider.dart';
+import 'package:moshi_movil_app/provider/verCarrito_Provider.dart';
 import 'package:moshi_movil_app/widgets/config_Responsive.dart';
 
 import 'package:provider/provider.dart';
@@ -12,64 +11,65 @@ class CarritoCompra extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig(context);
-    return ChangeNotifierProvider(
-      create: (context) => ProductosProvider()..fetchProductos(),
+    final cartInfo = Provider.of<CarritoCompratraer>(context);
+    return ChangeNotifierProvider.value(
+      value: cartInfo,
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.purple,
+          title: const Text('Carrito'),
+        ),
         body: SizedBox(
           width: SizeConfig.screenWidth,
           height: SizeConfig.screenHeight,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Consumer<ProductosProvider>(
-                  builder: (context, productoProvider, child) => productoProvider
-                          .isLoanding
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : Expanded(
-                          child: GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 1),
-                              itemCount: productoProvider.productos?.length,
-                              itemBuilder: (context, index) {
-                               // final PROD = productoProvider.productos?[index];
-                                return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SizedBox(
-                                      height: SizeConfig.blockSizeVertical(30),
-                                      child: Card(
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              width: 200,
-                                              height: 200,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          100),
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          'https://media2.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif?cid=ecf05e47t8efvz6rmr8c1ov5r8ggkjs0g71746h2dwy4y5wp&rid=giphy.gif&ct=g'),
-                                                      fit: BoxFit.scaleDown)),
-                                            ),
-                                            ListTile(
-                                                title: Text(
-                                                    'Nombre del Producto'),
-                                                subtitle: Text(
-                                                    'Precio del articulo'),
-                                                trailing: IconButton(
-                                                  icon: Icon(Icons
-                                                      .delete_rounded),
-                                                  onPressed: () {},
-                                                )),
-                                           
-                                          ],
-                                        ),
+              Consumer<CarritoCompratraer>(
+                builder: (context, cartInfo, child) => cartInfo.isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : Expanded(
+                        child: ListView.builder(
+                          itemCount: cartInfo.carritoprod?.length,
+                          itemBuilder: (context, index) {
+                            final carrito = cartInfo.carritoprod?[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: SizedBox(
+                                height: SizeConfig.blockSizeVertical(40),
+                                child: Card(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.all(20.0),
+                                        width: 150,
+                                        height: 150,
+                                        decoration: BoxDecoration(
+                                            color: Colors.purple,
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            image: const DecorationImage(
+                                              image: NetworkImage(
+                                                  'assets/img/logo.png'),
+                                            )),
                                       ),
-                                    ));
-                              })))
+                                      ListTile(
+                                        title: Text(cartInfo.nombre),
+                                        subtitle: Text(cartInfo.descripcion),
+                                        trailing: IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () {},
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+              ),
             ],
           ),
         ),
