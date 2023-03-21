@@ -80,41 +80,11 @@ class UserProvider extends ChangeNotifier {
           ScaffoldMessenger.of(context)
               .showSnackBar(const SnackBar(content: Text('error')));
         }
-
-        final response = await http.post(
-            Uri.parse('https://moshishop.up.railway.app/usuarios/login'),
-            headers: <String, String>{
-              'Content-type': 'application/json; charset=UTF-8'
-            },
-            body: jsonEncode(user));
-
-        print(response.statusCode);
-
-        if (response.statusCode == 200) {
-          final userToken = jsonDecode(response.body)[0];
-          final preference = await SharedPreferences.getInstance();
-          preference.setString('token', userToken);
-
-          print('token: $userToken');
-          if (context.mounted) {
-            userFound = true;
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Bienvenido a Moshishop')));
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => const NavDrawer()),
-            );
-          }
-        } else {
-          if (context.mounted) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(const SnackBar(content: Text('error')));
-          }
-        }
       }
+    }
+  }
 
-      Future singUpUser(String nombre, String correo, String password,
+     Future singUpUser(String nombre, String correo, String password,
           String telefono, String Direccion, BuildContext context) async {
         final singupUser = UserSingUpDto(
             nombre: nombre,
@@ -152,9 +122,4 @@ class UserProvider extends ChangeNotifier {
           }
         }
       }
-    }
-  }
-
-  void singUpUser(String text, String text2, String text3, String text4,
-      String text5, BuildContext context) {}
 }
