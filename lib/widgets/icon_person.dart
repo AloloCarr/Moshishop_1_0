@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moshi_movil_app/widgets/config_Responsive.dart';
 
 class IconPerson extends StatelessWidget {
   const IconPerson({
@@ -7,17 +8,14 @@ class IconPerson extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig(context);
     return SafeArea(
       child: Container(
-        margin: const EdgeInsets.only(top: 30),
-        width: double.infinity,
-        child: const Icon(
-          Icons.person_pin,
-          color: Colors.white,
-          size: 140,
+        height:SizeConfig.safeBlockSizeHorizontal(20) ,
+        width: SizeConfig.screenWidth,
+        child: Image.asset('assets/img/logo.png' )
         ),
-      ),
-    );
+      );
   }
 }
 
