@@ -184,12 +184,13 @@ class _SearchDelegate extends SearchDelegate<String> {
     );
   }
 
-  void navigateToNextScreen(BuildContext context, String codigoProducto) {
+  void navigateToNextScreen(BuildContext context, String codigoProducto, String imagen) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => AddCart(
           ProductoCodigo: codigoProducto,
+          imagen: imagen,
         ),
       ),
     );
@@ -207,12 +208,8 @@ class _SearchDelegate extends SearchDelegate<String> {
             itemCount: searchQuery.length,
             itemBuilder: (context, index) {
               final producto = searchQuery[index];
-              return 
-              ListTile(
-                leading: const CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 180, 42, 222),
-                  backgroundImage: AssetImage('assets/img/logo.png'),
-                ),
+              return ListTile(
+                leading: Image.network(producto['imagen']),
                 title: Text(producto['nombre']),
                 subtitle: Text(producto['descripcion']),
                 trailing: Row(
@@ -221,7 +218,7 @@ class _SearchDelegate extends SearchDelegate<String> {
                     IconButton(
                       icon: const Icon(Icons.shopping_cart_checkout_outlined),
                       onPressed: () {
-                        navigateToNextScreen(context, producto['codigo']);
+                        navigateToNextScreen(context, producto['codigo'], producto['imagen']);
                       },
                     ),
                     IconButton(
@@ -231,6 +228,7 @@ class _SearchDelegate extends SearchDelegate<String> {
                             MaterialPageRoute(
                               builder: (context) => ProductosPage(
                                 ProductoCodigo: producto['codigo'],
+                                imagen: producto['imagen'],
                               ),
                             ));
                       },

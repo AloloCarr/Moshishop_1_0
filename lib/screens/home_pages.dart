@@ -13,10 +13,8 @@ class HomePage extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
-    
     SizeConfig(context);
     return ChangeNotifierProvider(
       create: (context) => ProductosProvider()..fetchProductos(),
@@ -38,6 +36,11 @@ class HomePage extends StatelessWidget {
                           return Row(
                             children: [
                               ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(255, 180, 105, 193)),
+                                ),
                                 onPressed: () async {
                                   var productos = await productosProvider
                                       .obtenerProductosPorCategoria('pines');
@@ -46,6 +49,11 @@ class HomePage extends StatelessWidget {
                               ),
                               SizedBox(width: 10),
                               ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(255, 180, 105, 193)),
+                                ),
                                 onPressed: () async {
                                   var productos = await productosProvider
                                       .obtenerProductosPorCategoria('juguete');
@@ -54,6 +62,11 @@ class HomePage extends StatelessWidget {
                               ),
                               SizedBox(width: 10),
                               ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(255, 180, 105, 193)),
+                                ),
                                 onPressed: () async {
                                   var productos = await productosProvider
                                       .obtenerProductosPorCategoria('taza');
@@ -62,6 +75,11 @@ class HomePage extends StatelessWidget {
                               ),
                               SizedBox(width: 10),
                               ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(255, 180, 105, 193)),
+                                ),
                                 onPressed: () async {
                                   var productos = await productosProvider
                                       .obtenerProductosPorCategoria('camisa');
@@ -70,6 +88,11 @@ class HomePage extends StatelessWidget {
                               ),
                               SizedBox(width: 10),
                               ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(255, 180, 105, 193)),
+                                ),
                                 onPressed: () async {
                                   var productos = await productosProvider
                                       .obtenerProductosPorCategoria('libro');
@@ -78,6 +101,11 @@ class HomePage extends StatelessWidget {
                               ),
                               SizedBox(width: 10),
                               ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(255, 180, 105, 193)),
+                                ),
                                 onPressed: () async {
                                   var productos = await productosProvider
                                       .obtenerProductosPorCategoria('camisa');
@@ -86,6 +114,11 @@ class HomePage extends StatelessWidget {
                               ),
                               SizedBox(width: 10),
                               ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(255, 180, 105, 193)),
+                                ),
                                 onPressed: () async {
                                   var productos = await productosProvider
                                       .obtenerProductosPorCategoria('posters');
@@ -139,17 +172,17 @@ class HomePage extends StatelessWidget {
                                                   subtitle: Column(
                                                     children: [
                                                       Text(
-                                                          'Precio: ${PROD?.precio}'),
+                                                          'Precio: ${PROD?.precio}',
+                                                          ),
                                                       Text(
-                                                          'Categoria: ${PROD?.categoriaNombre}'),
+                                                          'Categoria: ${PROD?.categoriaNombre}',
+                                                          ),
                                                     ],
                                                   ),
                                                   trailing: IconButton(
                                                     icon: Icon(Icons
                                                         .favorite_border_outlined),
-                                                    onPressed: () {
-                                                      
-                                                    },
+                                                    onPressed: () {},
                                                   ),
                                                 ),
                                                 Row(
@@ -165,6 +198,7 @@ class HomePage extends StatelessWidget {
                                                                   ProductosPage(
                                                                 ProductoCodigo:
                                                                     '${PROD?.codigo}',
+                                                                imagen: '${PROD?.imagen}',
                                                               ),
                                                             ));
                                                       },
@@ -187,7 +221,8 @@ class HomePage extends StatelessWidget {
                                                                 builder: (context) =>
                                                                     AddCart(
                                                                         ProductoCodigo:
-                                                                            '${PROD?.codigo}')));
+                                                                            '${PROD?.codigo}',
+                                                                            imagen: '${PROD?.imagen}',)));
                                                       },
                                                       style: ElevatedButton
                                                           .styleFrom(

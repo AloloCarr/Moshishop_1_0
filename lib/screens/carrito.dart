@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:moshi_movil_app/provider/verCarrito_Provider.dart';
 import 'package:moshi_movil_app/widgets/config_Responsive.dart';

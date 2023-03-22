@@ -6,14 +6,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AddCart extends StatefulWidget {
   final String ProductoCodigo;
+  final String imagen;
 
-  const AddCart({Key? key, required this.ProductoCodigo}) : super(key: key);
+  const AddCart({Key? key, required this.ProductoCodigo, required this.imagen})
+      : super(key: key);
   @override
   _AddCart createState() => _AddCart();
 }
 
 class _AddCart extends State<AddCart> {
   int quantity = 1;
+  bool isLoading = false;
+
   Future<bool> agregarAlcarrito(int quantity, String ProductoCodigo) async {
     print("el producto seleccionado es: $ProductoCodigo");
     final preference = await SharedPreferences.getInstance();
@@ -45,17 +49,44 @@ class _AddCart extends State<AddCart> {
     }
   }
 
-  void _handleAddButtomPressed() async {
-    final succes = await agregarAlcarrito(quantity, widget.ProductoCodigo);
-    if (succes) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Producto agregado exitosamente.'),
-      ));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Producto sin stock.'),
-      ));
-    }
+  void _handleBuyButtonPressed() async {
+    final success = await agregarAlcarrito(quantity, widget.ProductoCodigo);
+    _showDialog(success);
+  }
+
+  void _showDialog(bool success) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(success ? 'Se Agrego Al carrito' : 'Error'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              success
+                  ? Image(
+                      image: AssetImage(
+                          'assets/img/logo.png')) // Agrega la imagen si la compra fue exitosa
+                  : Image(
+                      image: AssetImage(
+                          'assets/img/logo.png')), // Agrega la imagen de error si no hay stock disponible
+              SizedBox(height: 8.0),
+              Text(success
+                  ? 'El producto se agrego al carrito exitosamente.'
+                  : 'Lo siento hubo un error al agregar el producto al carrito'),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cerrar'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -73,13 +104,11 @@ class _AddCart extends State<AddCart> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              width: 200,
-              height: 250,
+              width: 250,
+              height: 300,
               decoration: BoxDecoration(
-                color: Colors.purple,
-                borderRadius: BorderRadius.circular(100),
                 image: DecorationImage(
-                  image: AssetImage('assets/img/logo.png'),
+                  image: NetworkImage(widget.imagen),
                 ),
               ),
             ),
@@ -126,7 +155,7 @@ class _AddCart extends State<AddCart> {
               height: 20,
             ),
             ElevatedButton(
-                onPressed: _handleAddButtomPressed,
+                onPressed: _handleBuyButtonPressed,
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurpleAccent),
                 child: Text('Confirmar'))
