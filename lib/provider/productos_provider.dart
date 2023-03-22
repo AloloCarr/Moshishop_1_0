@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -49,6 +51,7 @@ class ProductosProvider extends ChangeNotifier {
       return _productos!;
     } else {
       print(categoriaNombre);
+      // print(response.body);
       throw Exception('Error al obtener los productos por categoría');
     }
   }

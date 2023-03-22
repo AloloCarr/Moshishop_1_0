@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
                                           Color.fromARGB(255, 180, 105, 193)),
                                 ),
                                 onPressed: () async {
-                                  var productos = await productosProvider
+                                  final productos = await productosProvider
                                       .obtenerProductosPorCategoria('pines');
                                 },
                                 child: Text('Pines'),
@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
                                           Color.fromARGB(255, 180, 105, 193)),
                                 ),
                                 onPressed: () async {
-                                  var productos = await productosProvider
+                                  final productos = await productosProvider
                                       .obtenerProductosPorCategoria('juguete');
                                 },
                                 child: Text('Juguete'),
@@ -172,11 +172,11 @@ class HomePage extends StatelessWidget {
                                                   subtitle: Column(
                                                     children: [
                                                       Text(
-                                                          'Precio: ${PROD?.precio}',
-                                                          ),
+                                                        'Precio: ${PROD?.precio}',
+                                                      ),
                                                       Text(
-                                                          'Categoria: ${PROD?.categoriaNombre}',
-                                                          ),
+                                                        'Categoria: ${PROD?.categoriaNombre}',
+                                                      ),
                                                     ],
                                                   ),
                                                   trailing: IconButton(
@@ -198,7 +198,8 @@ class HomePage extends StatelessWidget {
                                                                   ProductosPage(
                                                                 ProductoCodigo:
                                                                     '${PROD?.codigo}',
-                                                                imagen: '${PROD?.imagen}',
+                                                                imagen:
+                                                                    '${PROD?.imagen}',
                                                               ),
                                                             ));
                                                       },
@@ -218,11 +219,14 @@ class HomePage extends StatelessWidget {
                                                         Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    AddCart(
-                                                                        ProductoCodigo:
-                                                                            '${PROD?.codigo}',
-                                                                            imagen: '${PROD?.imagen}',)));
+                                                                builder:
+                                                                    (context) =>
+                                                                        AddCart(
+                                                                          ProductoCodigo:
+                                                                              '${PROD?.codigo}',
+                                                                          imagen:
+                                                                              '${PROD?.imagen}',
+                                                                        )));
                                                       },
                                                       style: ElevatedButton
                                                           .styleFrom(
