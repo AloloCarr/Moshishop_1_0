@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:moshi_movil_app/widgets/icon_person.dart';
-import 'package:moshi_movil_app/widgets/login_form.dart';
 import 'package:moshi_movil_app/widgets/sign_up_form.dart';
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});

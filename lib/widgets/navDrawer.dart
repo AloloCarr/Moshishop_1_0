@@ -229,6 +229,7 @@ class _SearchDelegate extends SearchDelegate<String> {
                               builder: (context) => ProductosPage(
                                 ProductoCodigo: producto['codigo'],
                                 imagen: producto['imagen'],
+
                               ),
                             ));
                       },
@@ -267,7 +268,7 @@ class _SearchDelegate extends SearchDelegate<String> {
   //final AssetImage errorImage = const AssetImage('assets/img/trsite.gif');
   Future<List<dynamic>> buscarPorNombre(String nombre) async {
     final response = await http.get(Uri.parse(
-        'https://moshishop.up.railway.app/productos/findbyname?nombre=$query'));
+        'https://moshishopappi.fly.dev/productos/findbyname?nombre=$query'));
 
     if (response.statusCode == 200) {
       final searchQuery = json.decode(response.body);

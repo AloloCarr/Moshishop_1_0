@@ -31,7 +31,7 @@ class CarritoCompratraer extends ChangeNotifier {
   Future fechtCarrito(BuildContext context) async {
     final preference = await SharedPreferences.getInstance();
     final response = await http.get(
-        Uri.parse('https://moshishop.up.railway.app/cart/obtener'),
+        Uri.parse('https://moshishopappi.fly.dev/cart/obtener'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization': preference.getString('token')!

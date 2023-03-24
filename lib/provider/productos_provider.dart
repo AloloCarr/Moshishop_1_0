@@ -16,7 +16,7 @@ class ProductosProvider extends ChangeNotifier {
 
   Future fetchProductos() async {
     final response = await http
-        .get(Uri.parse('https://moshishop.up.railway.app/productos/buscar'));
+        .get(Uri.parse('https://moshishopappi.fly.dev/productos/buscar'));
 
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body);
@@ -30,17 +30,17 @@ class ProductosProvider extends ChangeNotifier {
     }
   }
 
-  Future<List<ProductosReponseDtos>> obtenerProductosPorCategoria(
-      String categoriaNombre) async {
+  Future<void> obtenerProductosPorCategoria(String categoriaNombre) async {
     final body = {
       'CategoriaNombre': categoriaNombre,
     };
 
-    final response = await http.post(
+    print('la categoria seleccionada es $categoriaNombre');
+    final response = await http.get(
       Uri.parse(
-          'https://moshishop.up.railway.app/productos/Buscarporcategoria'),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-      body: jsonEncode(body),
+          'https://moshishopappi.fly.dev/productos/Buscarporcategoria?CategoriaNombre=$categoriaNombre'),
+      // headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      // body: jsonEncode(body),
     );
 
     if (response.statusCode == 200) {
@@ -48,7 +48,6 @@ class ProductosProvider extends ChangeNotifier {
       final List<dynamic> data = productosJson as List;
       _productos = data.map((e) => ProductosReponseDtos.fromMap(e)).toList();
       notifyListeners(); // Notificar a los listeners que la lista de productos ha sido actualizada
-      return _productos!;
     } else {
       print(categoriaNombre);
       // print(response.body);

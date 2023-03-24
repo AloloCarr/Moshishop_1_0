@@ -44,6 +44,8 @@ class _PrefilPageState extends State<PrefilPage> {
     super.dispose();
   }
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final userInfo = Provider.of<UserProvider>(context);
@@ -139,8 +141,8 @@ class _PrefilPageState extends State<PrefilPage> {
                           ),
                           ElevatedButton(
                             style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.green),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.green),
                             ),
                             onPressed: () {
                               actualizarUsuario(
@@ -162,31 +164,30 @@ class _PrefilPageState extends State<PrefilPage> {
               ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromARGB(255, 184, 83, 202),
-        onPressed: () async {
-          // Llama a la función que actualiza los datos del usuario
-          await actualizarUsuario(
-            _correoController.text,
-            _nombreController.text,
-            _passwordController
-                .text, // No se actualiza la contraseña, así que se pasa null
-            _telefonoController.text,
-            _direccionController.text,
-          );
-
-          // Recarga la pantalla para mostrar los datos actualizados
-          setState(() {});
+        backgroundColor: Colors.purple,
+        onPressed: () {
+          setState(() {
+            isLoading = true;
+          });
+          refrescar().then((_) {
+            setState(() {
+              isLoading = false;
+            });
+          });
         },
-        child: Icon(Icons.refresh),
+        child: const Icon(Icons.refresh),
       ),
     );
+  }
+
+  Future<void> refrescar() async {
+    return Future.delayed(const Duration(seconds: 0));
   }
 
   Future<void> actualizarUsuario(String correo, String nombre, String password,
       String telefono, String Direccion) async {
     final preference = await SharedPreferences.getInstance();
-    final url =
-        Uri.parse('https://moshishop.up.railway.app/Usuarios/actualizar');
+    final url = Uri.parse('https://moshishopappi.fly.dev/Usuarios/actualizar');
     final headers = {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': preference.getString('token')!

@@ -100,31 +100,6 @@ class HomePage extends StatelessWidget {
                                 child: Text('Libro'),
                               ),
                               SizedBox(width: 10),
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Color.fromARGB(255, 180, 105, 193)),
-                                ),
-                                onPressed: () async {
-                                  var productos = await productosProvider
-                                      .obtenerProductosPorCategoria('camisa');
-                                },
-                                child: Text('Camisa'),
-                              ),
-                              SizedBox(width: 10),
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Color.fromARGB(255, 180, 105, 193)),
-                                ),
-                                onPressed: () async {
-                                  var productos = await productosProvider
-                                      .obtenerProductosPorCategoria('posters');
-                                },
-                                child: Text('Posters'),
-                              ),
                             ],
                           );
                         },

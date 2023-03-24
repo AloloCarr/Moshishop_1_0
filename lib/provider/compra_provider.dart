@@ -8,7 +8,8 @@ class ProductosPage extends StatefulWidget {
   final String ProductoCodigo;
   final String imagen;
 
-  const ProductosPage({super.key, required this.ProductoCodigo, required this.imagen});
+  const ProductosPage(
+      {super.key, required this.ProductoCodigo, required this.imagen});
   @override
   _ProductosPageState createState() => _ProductosPageState();
 }
@@ -30,7 +31,7 @@ class _ProductosPageState extends State<ProductosPage> {
     print("EL USUARIO ES $UsuarioCorreo");
     // final preference = await SharedPreferences.getInstance();
     final response = await http.post(
-        Uri.parse('https://moshishop.up.railway.app/compras/agregar'),
+        Uri.parse('https://moshishopappi.fly.dev/compras/agregar'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           // 'Authorization': preference.getString('token')!
@@ -55,39 +56,45 @@ class _ProductosPageState extends State<ProductosPage> {
   }
 
   void _handleBuyButtonPressed() async {
-  final success = await comprarProductos(unidades, widget.ProductoCodigo, UsuarioCorreo.text);
-  _showDialog(success);
-}
+    final success = await comprarProductos(
+        unidades, widget.ProductoCodigo, UsuarioCorreo.text);
+    _showDialog(success);
+  }
 
   void _showDialog(bool success) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(success ? 'Compra exitosa' : 'Error'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            success
-                ? Image(image: AssetImage('assets/img/logo.png'))// Agrega la imagen si la compra fue exitosa
-                : Image(image: AssetImage('assets/img/logo.png')), // Agrega la imagen de error si no hay stock disponible
-            SizedBox(height: 8.0),
-            Text(success ? 'El producto se compró correctamente.' : 'No hay stock disponible.'),
-          ],
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('Cerrar'),
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(success ? 'Compra exitosa' : 'Error'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              success
+                  ? Image(
+                      image: AssetImage(
+                          'assets/img/logo.png')) // Agrega la imagen si la compra fue exitosa
+                  : Image(
+                      image: AssetImage(
+                          'assets/img/logo.png')), // Agrega la imagen de error si no hay stock disponible
+              SizedBox(height: 8.0),
+              Text(success
+                  ? 'El producto se compró correctamente.'
+                  : 'No hay stock disponible.'),
+            ],
           ),
-        ],
-      );
-    },
-  );
-}
-
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cerrar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

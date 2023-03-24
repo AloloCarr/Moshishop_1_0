@@ -22,7 +22,7 @@ class _AddFavoritesState extends State<AddFavorites> {
     print('el producto seleccionado es: $ProductosCodigo');
     final preference = await SharedPreferences.getInstance();
     final response = await http.post(
-        Uri.parse('https://moshishop.up.railway.app/favorite/agregarfav'),
+        Uri.parse('https://moshishopappi.fly.dev/favorite/agregarfav'),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': preference.getString('token')!

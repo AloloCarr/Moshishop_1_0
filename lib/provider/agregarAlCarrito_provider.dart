@@ -22,7 +22,7 @@ class _AddCart extends State<AddCart> {
     print("el producto seleccionado es: $ProductoCodigo");
     final preference = await SharedPreferences.getInstance();
     final response = await http.post(
-      Uri.parse('https://moshishop.up.railway.app/cart/agregar'),
+      Uri.parse('https://moshishopappi.fly.dev/cart/agregar'),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': preference.getString('token')!
