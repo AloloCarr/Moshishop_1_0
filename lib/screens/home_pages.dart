@@ -9,9 +9,11 @@ import 'package:moshi_movil_app/widgets/config_Responsive.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({
+    const HomePage({
     Key? key,
   }) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -171,10 +173,13 @@ class HomePage extends StatelessWidget {
                                                             MaterialPageRoute(
                                                               builder: (context) =>
                                                                   ProductosPage(
+                                                                    nombre: '${PROD?.nombre}',
                                                                 ProductoCodigo:
                                                                     '${PROD?.codigo}',
                                                                 imagen:
                                                                     '${PROD?.imagen}',
+                                                                precio:
+                                                                    PROD!.precio  ,
                                                               ),
                                                             ));
                                                       },
@@ -197,6 +202,7 @@ class HomePage extends StatelessWidget {
                                                                 builder:
                                                                     (context) =>
                                                                         AddCart(
+                                                                          nombre: '${PROD?.nombre}',
                                                                           ProductoCodigo:
                                                                               '${PROD?.codigo}',
                                                                           imagen:

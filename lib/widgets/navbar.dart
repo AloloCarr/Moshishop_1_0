@@ -1,5 +1,5 @@
 // ignore_for_file: file_names, prefer_const_constructors
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:moshi_movil_app/screens/configuracion.dart';
 import 'package:moshi_movil_app/screens/favoritos.dart';
 import 'package:moshi_movil_app/screens/home_pages.dart';
@@ -15,7 +15,7 @@ class NavBar extends StatefulWidget {
 class _MyStateNavBar extends State<NavBar> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
+     HomePage(),
     FavoritosPage(),
     SettingsPage(),
   ];
@@ -64,7 +64,7 @@ class _MyStateNavBar extends State<NavBar> {
       ),
     );
   }
-}
+}*/
 
 
  

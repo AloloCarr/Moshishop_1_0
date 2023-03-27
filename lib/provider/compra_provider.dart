@@ -7,9 +7,15 @@ import 'package:http/http.dart' as http;
 class ProductosPage extends StatefulWidget {
   final String ProductoCodigo;
   final String imagen;
+  final String precio;
+  final String nombre;
 
   const ProductosPage(
-      {super.key, required this.ProductoCodigo, required this.imagen});
+      {super.key,
+      required this.ProductoCodigo,
+      required this.imagen,
+      required this.precio,
+      required this.nombre});
   @override
   _ProductosPageState createState() => _ProductosPageState();
 }
@@ -24,8 +30,8 @@ class _ProductosPageState extends State<ProductosPage> {
   }
 
   int unidades = 1;
-  Future<bool> comprarProductos(
-      int unidades, String ProductoCodigo, String UsuarioCorreo) async {
+  Future<bool> comprarProductos(int unidades, String ProductoCodigo,
+      String UsuarioCorreo, String precio, String nombre) async {
     //final Logger = Logger();
     print("el producto seleccionado es: $ProductoCodigo");
     print("EL USUARIO ES $UsuarioCorreo");
@@ -57,7 +63,7 @@ class _ProductosPageState extends State<ProductosPage> {
 
   void _handleBuyButtonPressed() async {
     final success = await comprarProductos(
-        unidades, widget.ProductoCodigo, UsuarioCorreo.text);
+        unidades, widget.ProductoCodigo, UsuarioCorreo.text, widget.precio, widget.nombre);
     _showDialog(success);
   }
 
@@ -104,32 +110,46 @@ class _ProductosPageState extends State<ProductosPage> {
         title: Text('Detalles de la compra'),
       ),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(100.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 200,
-                  height: 250,
-                  child: Image.network(widget.imagen),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              SizedBox(
+                width: 300,
+                height: 300,
+                child: Image.network(widget.imagen),
+              ),
+              SizedBox(height: 30),
+              Text(
+                'Codigo Producto:  ${widget.ProductoCodigo}',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold, // hace el texto en negrita
+                  fontSize: 16,
+                  fontStyle: FontStyle
+                      .normal, // aumenta el tamaño de fuente en 2 puntos
                 ),
-                SizedBox(height: 30),
-                Text(
-                  'Producto:  ${widget.ProductoCodigo}',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold, // hace el texto en negrita
-                    fontSize: 16,
-                    fontStyle: FontStyle
-                        .normal, // aumenta el tamaño de fuente en 2 puntos
-                  ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                'Producto:  ${widget.nombre}',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold, // hace el texto en negrita
+                  fontSize: 16,
+                  fontStyle: FontStyle
+                      .normal, // aumenta el tamaño de fuente en 2 puntos
                 ),
-                SizedBox(
-                  height: 16,
-                ),
-                TextFormField(
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              SizedBox(
+                width: 300.0,
+                child: TextFormField(
                   controller: UsuarioCorreo,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
@@ -138,48 +158,58 @@ class _ProductosPageState extends State<ProductosPage> {
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          if (unidades > 1) {
-                            unidades--;
-                          }
-                        });
-                      },
-                      icon: Icon(Icons.remove_circle_outline_outlined),
-                    ),
-                    SizedBox(
-                      width: 16,
-                    ),
-                    Text(unidades.toString()),
-                    SizedBox(width: 16),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          unidades++;
-                        });
-                      },
-                      icon: Icon(Icons.add),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  onPressed: _handleBuyButtonPressed,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Colors.deepPurpleAccent, // Establece el color de fondo
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        if (unidades > 1) {
+                          unidades--;
+                        }
+                      });
+                    },
+                    icon: Icon(Icons.remove_circle_outline_outlined),
                   ),
-                  child: Text('Comprar'),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Text(unidades.toString()),
+                  SizedBox(width: 16),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        unidades++;
+                      });
+                    },
+                    icon: Icon(Icons.add),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'Total: \$${(unidades * double.parse(widget.precio)).toStringAsFixed(2)}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
-              ],
-            ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: _handleBuyButtonPressed,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Colors.deepPurpleAccent, // Establece el color de fondo
+                ),
+                child: Text('Comprar'),
+              ),
+            ],
           ),
         ),
       ),

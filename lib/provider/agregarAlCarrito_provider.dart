@@ -7,8 +7,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AddCart extends StatefulWidget {
   final String ProductoCodigo;
   final String imagen;
+  final String nombre;
 
-  const AddCart({Key? key, required this.ProductoCodigo, required this.imagen})
+  const AddCart(
+      {Key? key,
+      required this.ProductoCodigo,
+      required this.imagen,
+      required this.nombre})
       : super(key: key);
   @override
   _AddCart createState() => _AddCart();
@@ -18,7 +23,8 @@ class _AddCart extends State<AddCart> {
   int quantity = 1;
   bool isLoading = false;
 
-  Future<bool> agregarAlcarrito(int quantity, String ProductoCodigo) async {
+  Future<bool> agregarAlcarrito(
+      int quantity, String ProductoCodigo, String nombre) async {
     print("el producto seleccionado es: $ProductoCodigo");
     final preference = await SharedPreferences.getInstance();
     final response = await http.post(
@@ -50,7 +56,8 @@ class _AddCart extends State<AddCart> {
   }
 
   void _handleBuyButtonPressed() async {
-    final success = await agregarAlcarrito(quantity, widget.ProductoCodigo);
+    final success =
+        await agregarAlcarrito(quantity, widget.ProductoCodigo, widget.nombre);
     _showDialog(success);
   }
 
@@ -114,6 +121,19 @@ class _AddCart extends State<AddCart> {
             ),
             SizedBox(height: 30),
             Text(
+              'Producto: ${widget.nombre}',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold, // hace el texto en negrita
+                fontSize: 16,
+                fontStyle:
+                    FontStyle.normal, // aumenta el tamaño de fuente en 2 puntos
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Text(
               'Producto Codigo:  ${widget.ProductoCodigo}',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -129,6 +149,7 @@ class _AddCart extends State<AddCart> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(width: 16),
                 IconButton(
                   onPressed: () {
                     setState(() {
@@ -139,6 +160,7 @@ class _AddCart extends State<AddCart> {
                   },
                   icon: Icon(Icons.remove_circle_outline_outlined),
                 ),
+                SizedBox(width: 16),
                 Text(quantity.toString()),
                 SizedBox(width: 16),
                 IconButton(
@@ -152,7 +174,7 @@ class _AddCart extends State<AddCart> {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: 16,
             ),
             ElevatedButton(
                 onPressed: _handleBuyButtonPressed,
