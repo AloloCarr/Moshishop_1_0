@@ -7,7 +7,7 @@ import 'package:moshi_movil_app/screens/carrito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CarritoCompratraer extends ChangeNotifier {
-  double _pay = 0;
+  double _pay = 0.0;
   String _nombre = '';
   String _precio = '';
   String _descripcion = '';
@@ -44,14 +44,14 @@ class CarritoCompratraer extends ChangeNotifier {
       print(jsonDecode(response.body));
       _nombre = jsonDecode(response.body)['carrito'][0]['Producto']['nombre'];
       print(_nombre);
-      _pay = jsonDecode(response.body)['carrito'][0]['pay'];
+      _pay = jsonDecode(response.body)['carrito'][0]['pay'].toDouble();
       print(_pay);
       _precio = jsonDecode(response.body)['carrito'][0]['Producto']['precio'];
       print(_precio);
       _descripcion =
           jsonDecode(response.body)['carrito'][0]['Producto']['descripcion'];
       print(_descripcion);
-      _paytotal = jsonDecode(response.body)['paytotal'];
+      _paytotal = jsonDecode(response.body)['paytotal'].toDouble();
       print(_paytotal);
       isLoading = false;
       print(nombre);

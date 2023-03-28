@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, unused_local_variable
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -9,6 +9,7 @@ import 'package:moshi_movil_app/dtos/responses/Productos_response-dto.dart';
 class ProductosProvider extends ChangeNotifier {
   bool isLoanding = true;
   final logger = Logger();
+
 
   List<ProductosReponseDtos>? _productos;
 

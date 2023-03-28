@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, recursive_getters, prefer_final_fields, avoid_print
+// ignore_for_file: file_names, recursive_getters, prefer_final_fields, avoid_print, unused_element
 
 import 'package:flutter/material.dart';
 import 'package:moshi_movil_app/provider/agregarAlCarrito_provider.dart';
@@ -29,7 +29,7 @@ class NavDraweState extends State<NavDrawer> {
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
-        return const HomePage();
+        return  const HomePage();
       case 1:
         //return const FavoritosScreen();
       case 2:
@@ -185,13 +185,14 @@ class _SearchDelegate extends SearchDelegate<String> {
     );
   }
 
-  void navigateToNextScreen(BuildContext context, String codigoProducto, String imagen) {
+  void navigateToNextScreen(BuildContext context, String codigoProducto, String imagen, String nombre) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => AddCart(
           ProductoCodigo: codigoProducto,
           imagen: imagen,
+          nombre: nombre,
         ),
       ),
     );
@@ -219,7 +220,7 @@ class _SearchDelegate extends SearchDelegate<String> {
                     IconButton(
                       icon: const Icon(Icons.shopping_cart_checkout_outlined),
                       onPressed: () {
-                        navigateToNextScreen(context, producto['codigo'], producto['imagen']);
+                        navigateToNextScreen(context, producto['codigo'], producto['imagen'], producto['nombre']);
                       },
                     ),
                     IconButton(
@@ -228,8 +229,10 @@ class _SearchDelegate extends SearchDelegate<String> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ProductosPage(
+                                nombre: producto ['nombre'],
                                 ProductoCodigo: producto['codigo'],
                                 imagen: producto['imagen'],
+                               precio: producto['precio']
 
                               ),
                             ));
@@ -247,11 +250,10 @@ class _SearchDelegate extends SearchDelegate<String> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/img/pac-404.png',
+                  'assets/img/5-removebg-preview.png',
                   width: 300,
                   height: 300,
                 ),
-                const SizedBox(height: 10),
                 Text(
                   '${snapshot.error}',
                   textAlign: TextAlign.center,
