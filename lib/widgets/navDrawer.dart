@@ -31,13 +31,13 @@ class NavDraweState extends State<NavDrawer> {
       case 0:
         return const HomePage();
       case 1:
-        return const FavoritosPage();
+        //return const FavoritosScreen();
       case 2:
         return const CarritoCompra();
       case 3:
         return const PrefilPage();
       case 4:
-        return const SettingsPage();
+        //return const SettingsPage();
       case 5:
         return; //const LoginScreen();
     }
@@ -97,15 +97,15 @@ class NavDraweState extends State<NavDrawer> {
                 _onSelectItem(0);
               },
             ),
-            ListTile(
+           /* ListTile(
               title: const Text('Favoritos'),
-              leading: const Icon(Icons.star_border_purple500),
+              leading: const Icon(Icons.favorite_border_outlined),
               selected: (1 == _selectDrawerItem),
               selectedColor: Colors.deepPurpleAccent.shade200,
               onTap: () {
                 _onSelectItem(1);
               },
-            ),
+            ) */
             ListTile(
               title: const Text('Carrito de compras'),
               leading: const Icon(Icons.shopping_cart_rounded),
@@ -126,15 +126,16 @@ class NavDraweState extends State<NavDrawer> {
               },
             ),
             const Divider(),
-            ListTile(
-              title: const Text('Configuraciones'),
-              leading: const Icon(Icons.settings),
-              selected: (4 == _selectDrawerItem),
+            /*
+             ListTile(
+              title: const Text('Favoritos'),
+              leading: const Icon(Icons.favorite_border_outlined),
+              selected: (1 == _selectDrawerItem),
               selectedColor: Colors.deepPurpleAccent.shade200,
               onTap: () {
-                _onSelectItem(4);
+                _onSelectItem(1);
               },
-            ),
+            ) */
             ListTile(
               title: const Text('Cerrar sesion'),
               leading: const Icon(Icons.exit_to_app_rounded),

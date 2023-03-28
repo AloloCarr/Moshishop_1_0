@@ -1,58 +1,148 @@
-// ignore_for_file: unused_local_variable, avoid_print, unused_element, non_constant_identifier_names, use_build_context_synchronously
-
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 
-class AddFavorites extends StatefulWidget {
-  final String ProductoCodigo;
-  const AddFavorites({Key? key, required this.ProductoCodigo})
+class FavoriteButton extends StatefulWidget {
+  final String productoCodigo;
+
+  const FavoriteButton({Key? key, required this.productoCodigo})
       : super(key: key);
+
   @override
-  State<AddFavorites> createState() => _AddFavoritesState();
-
-
-
+  FavoriteButtonState createState() => FavoriteButtonState();
 }
 
-class _AddFavoritesState extends State<AddFavorites> {
-  Future<bool> agregarAFavoritos(String ProductosCodigo) async {
-    print('el producto seleccionado es: $ProductosCodigo');
+class FavoriteButtonState extends State<FavoriteButton> {
+  bool isLiked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadIsLiked();
+  }
+
+  Future<void> _loadIsLiked() async {
     final preference = await SharedPreferences.getInstance();
-    final response = await http.post(
-        Uri.parse('https://moshishopappi.fly.dev/favorite/agregarfav'),
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': preference.getString('token')!
-        },
-        body: jsonEncode(<String, dynamic>{'ProductoCodigo': ProductosCodigo}));
+    setState(() {
+      isLiked = preference.getBool(widget.productoCodigo) ?? false;
+    });
+  }
+
+  Future<void> _agregarFavorito() async {
+    final preference = await SharedPreferences.getInstance();
+    final url = Uri.parse('https://moshishopappi.fly.dev/favorite/agregarfav');
+    final headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': preference.getString('token')!
+    };
+    final body = {'ProductoCodigo': widget.productoCodigo};
+    final response =
+        await http.post(url, headers: headers, body: json.encode(body));
+    final jsonResponse = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
-      return true;
+      setState(() {
+        isLiked = true;
+      });
+      preference.setBool(widget.productoCodigo, true);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Producto agregado a favoritos'),
+          backgroundColor: Colors.green,
+          action: SnackBarAction(
+            label: 'Cerrar',
+            onPressed: () {},
+            textColor: Colors.white,
+          ),
+        ),
+      );
+      print(jsonResponse);
     } else {
-      final jsonResponse = jsonDecode(response.body);
-      print('Respuesta del Servidor');
-      throw Exception('Error al agregar productos a favoritos');
+      if (jsonResponse.containsKey('message') &&
+          jsonResponse['message'] == 'El producto ya está en tus favoritos') {
+        setState(() {
+          isLiked = true;
+        });
+        preference.setBool(widget.productoCodigo, true);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Producto ya agregado'),
+              content: Text(jsonResponse['message']),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Cerrar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        print('respuesta del servidor: $jsonResponse');
+        throw Exception('Error al agregar el producto a favoritos');
+      }
     }
   }
 
-  void _handleaddfavorite() async {
-    final succes = await agregarAFavoritos(widget.ProductoCodigo);
+  Future<void> _eliminarFavorito() async {
+    final preference = await SharedPreferences.getInstance();
+    final url = Uri.parse('https://moshishopappi.fly.dev/favorite/eliminar');
+    final headers = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': preference.getString('token')!
+    };
+    final body = {'ProductoCodigo': widget.productoCodigo};
+    final response =
+        await http.delete(url, headers: headers, body: json.encode(body));
+    final jsonResponse = jsonDecode(response.body);
 
-    if(succes){ ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Producto agregado a favoritos.'),
-      ));
+    if (response.statusCode == 200) {
+      setState(() {
+        isLiked = false;
+      });
+      preference.setBool(widget.productoCodigo, false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Producto eliminado de favoritos'),
+          backgroundColor: Colors.red,
+          action: SnackBarAction(
+            label: 'Cerrar',
+            onPressed: () {},
+            textColor: Colors.white,
+          ),
+        ),
+      );
+      print(jsonResponse);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Producto no se agreggo el producto a categorias.'),
-      ));
+      print('respuesta del servidor: $jsonResponse');
+      throw Exception('Error al eliminar el producto de favoritos');
     }
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return IconButton(
+      onPressed: () {
+        if (isLiked) {
+          _eliminarFavorito();
+        } else {
+          _agregarFavorito();
+        }
+
+        setState(() {
+          isLiked = !isLiked;
+        });
+      },
+      icon: isLiked
+          ? const Icon(Icons.favorite, color: Colors.red)
+          : const Icon(Icons.favorite_border),
+    );
   }
 }

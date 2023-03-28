@@ -16,7 +16,7 @@ class _MyStateNavBar extends State<NavBar> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     HomePage(),
-    FavoritosPage(),
+    FavoritosScreen(),
     SettingsPage(),
   ];
 
@@ -49,14 +49,14 @@ class _MyStateNavBar extends State<NavBar> {
             icon: Icon(Icons.account_box),
             label: 'Perfil',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
+          /*BottomNavigationBarItem(
+            icon: Icon(Icons.favorite_border_outlined),
             label: 'Favoritos',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Configuraciones',
-          ),
+          ),*/
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: const Color.fromARGB(255, 17, 9, 18),

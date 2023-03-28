@@ -2,17 +2,28 @@
 import 'package:flutter/material.dart';
 import 'package:moshi_movil_app/provider/agregarAlCarrito_provider.dart';
 import 'package:moshi_movil_app/provider/compra_provider.dart';
+import 'package:moshi_movil_app/provider/favoritos_provider.dart';
 
 import 'package:moshi_movil_app/provider/productos_provider.dart';
+import 'package:moshi_movil_app/screens/perfil.dart';
 import 'package:moshi_movil_app/widgets/config_Responsive.dart';
 
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+Map<String, bool> favorites = {}; // mapa para almacenar los favoritos
+
+bool isLiked = false;
+
+class HomePage extends StatefulWidget {
   const HomePage({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     SizeConfig(context);
@@ -109,116 +120,106 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               Consumer<ProductosProvider>(
-                  builder: (context, productoProvider, child) =>
-                      productoProvider.isLoanding
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Expanded(
-                              child: GridView.builder(
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 1),
-                                  itemCount: productoProvider.productos?.length,
-                                  itemBuilder: (context, index) {
-                                    final PROD =
-                                        productoProvider.productos?[index];
-                                    return Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: SizedBox(
-                                          height:
-                                              SizeConfig.blockSizeVertical(40),
-                                          child: Card(
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  margin: const EdgeInsets.all(
-                                                      20.0),
-                                                  width: 150,
-                                                  height: 150,
-                                                  decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: NetworkImage(
-                                                              '${PROD?.imagen}'))),
-                                                ),
-                                                ListTile(
-                                                  title:
-                                                      Text('${PROD?.nombre}'),
-                                                  subtitle: Column(
-                                                    children: [
-                                                      Text(
-                                                        'Precio: ${PROD?.precio}',
-                                                      ),
-                                                      Text(
-                                                        'Categoria: ${PROD?.categoriaNombre}',
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  trailing: IconButton(
-                                                    icon: Icon(Icons
-                                                        .favorite_border_outlined),
-                                                    onPressed: () {},
-                                                  ),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  ProductosPage(
-                                                                ProductoCodigo:
-                                                                    '${PROD?.codigo}',
-                                                                imagen:
-                                                                    '${PROD?.imagen}',
-                                                              ),
-                                                            ));
-                                                      },
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor: Colors
-                                                            .deepPurpleAccent, // Establece el color de fondo
-                                                      ),
-                                                      child:
-                                                          Text('Comprar Ahora'),
-                                                    ),
-                                                    SizedBox(
-                                                        width:
-                                                            20), // Espacio entre los botones
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        AddCart(
-                                                                          ProductoCodigo:
-                                                                              '${PROD?.codigo}',
-                                                                          imagen:
-                                                                              '${PROD?.imagen}',
-                                                                        )));
-                                                      },
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor: Colors
-                                                            .deepPurpleAccent, // Establece el color de fondo
-                                                      ),
-                                                      child: Text(
-                                                          'Añadir a carrito'),
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
+                builder: (context, productoProvider, child) => productoProvider
+                        .isLoanding
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Expanded(
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 1),
+                          itemCount: productoProvider.productos?.length,
+                          itemBuilder: (context, index) {
+                            final PROD = productoProvider.productos?[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: SizedBox(
+                                height: SizeConfig.blockSizeVertical(40),
+                                child: Card(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.all(20.0),
+                                        width: 150,
+                                        height: 150,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: NetworkImage(
+                                                    '${PROD?.imagen}'))),
+                                      ),
+                                      ListTile(
+                                          title: Text('${PROD?.nombre}'),
+                                          subtitle: Column(
+                                            children: [
+                                              Text(
+                                                'Precio: ${PROD?.precio}',
+                                              ),
+                                              Text(
+                                                'Categoria: ${PROD?.categoriaNombre}',
+                                              ),
+                                            ],
                                           ),
-                                        ));
-                                  }),
-                            )),
+                                          trailing: FavoriteButton(
+                                              productoCodigo:
+                                                  PROD?.codigo ?? '')),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProductosPage(
+                                                      ProductoCodigo:
+                                                          '${PROD?.codigo}',
+                                                      imagen: '${PROD?.imagen}',
+                                                    ),
+                                                  ));
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors
+                                                  .deepPurpleAccent, // Establece el color de fondo
+                                            ),
+                                            child: Text('Comprar Ahora'),
+                                          ),
+                                          SizedBox(
+                                              width:
+                                                  20), // Espacio entre los botones
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AddCart(
+                                                            ProductoCodigo:
+                                                                '${PROD?.codigo}',
+                                                            imagen:
+                                                                '${PROD?.imagen}',
+                                                          )));
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors
+                                                  .deepPurpleAccent, // Establece el color de fondo
+                                      ),
+                                      child: Text('Añadir a carrito'),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
             ],
           ),
         ),
