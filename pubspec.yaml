@@ -45,6 +45,13 @@ dependencies:
   jwt_decoder: ^2.0.1
   shared_preferences: ^2.0.18
 
+  
+flutter_icons:
+  android: 'launcher_icon'
+  ios: false
+  imagen_paht: 'assets/img/logo.png'
+  adaptive_icon_background: 'assets/img/logo.png'
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -76,6 +83,12 @@ flutter:
     - assets/img/404.02.png
     - assets/img/755014.png
     - assets/img/pac-404.png
+    - assets/img/yes.gif
+    - assets/img/nop.gif
+    - assets/img/5-removebg-preview.png
+    - assets/img/Kimetsu-no-Yaiba.jpg
+    - assets/img/1366_2000.jpeg
+    - assets/img/tipos-de-animes-saiba-quais-sao-os-generos-mais-populares-e-assistidos.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
