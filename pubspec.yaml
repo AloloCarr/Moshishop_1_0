@@ -86,9 +86,6 @@ flutter:
     - assets/img/yes.gif
     - assets/img/nop.gif
     - assets/img/5-removebg-preview.png
-    - assets/img/Kimetsu-no-Yaiba.jpg
-    - assets/img/1366_2000.jpeg
-    - assets/img/tipos-de-animes-saiba-quais-sao-os-generos-mais-populares-e-assistidos.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
