@@ -170,6 +170,14 @@ class _PrefilPageState extends State<PrefilPage> {
                                   ),
                                 );
                               }
+                              actualizarUsuario(
+                                _correoController.text,
+                                _nombreController.text,
+                                _passwordController
+                                    .text, // No se actualiza la contraseña, así que se pasa null
+                                _telefonoController.text,
+                                _direccionController.text,
+                              );
                             },
                             child: Text('Guardar cambios'),
                           ),
@@ -179,6 +187,21 @@ class _PrefilPageState extends State<PrefilPage> {
                   ),
                 ),
               ),
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.purple,
+        onPressed: () {
+          setState(() {
+            isLoading = true;
+          });
+          refrescar().then((_) {
+            setState(() {
+              isLoading = false;
+            });
+          });
+        },
+        child: const Icon(Icons.refresh),
       ),
     );
   }

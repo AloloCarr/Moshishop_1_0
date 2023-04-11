@@ -24,6 +24,11 @@ class CarritoItem {
 }
 
 class CarritoCompratraer extends ChangeNotifier {
+  double _pay = 0.0;
+  String _nombre = '';
+  String _precio = '';
+  String _descripcion = '';
+  double _paytotal = 0.0;
   bool isLoading = true;
 
   List<CarritoItem>? _carritoprod;
@@ -43,6 +48,11 @@ class CarritoCompratraer extends ChangeNotifier {
         'Authorization': preference.getString('token')!
       },
     );
+        Uri.parse('https://moshishopappi.fly.dev/cart/obtener');
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': preference.getString('token')!
+        };
 
     if (response.statusCode == 200) {
       print(response.body);
@@ -66,6 +76,23 @@ class CarritoCompratraer extends ChangeNotifier {
         context,
         MaterialPageRoute(builder: (context) => const CarritoCompra()),
       );
+      print(jsonDecode(response.body));
+      _nombre = jsonDecode(response.body)['carrito'][0]['Producto']['nombre'];
+      print(_nombre);
+      _pay = jsonDecode(response.body)['carrito'][0]['pay'].toDouble();
+      print(_pay);
+      _precio = jsonDecode(response.body)['carrito'][0]['Producto']['precio'];
+      print(_precio);
+      _descripcion =
+          jsonDecode(response.body)['carrito'][0]['Producto']['descripcion'];
+      print(_descripcion);
+      _paytotal = jsonDecode(response.body)['paytotal'].toDouble();
+      print(_paytotal);
+      isLoading = false;
+      print(_nombre);
+
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const CarritoCompra()));
       notifyListeners();
     }
   }

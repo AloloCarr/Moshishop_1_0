@@ -66,8 +66,7 @@ class _CarritoCompraState extends State<CarritoCompra> {
                                                 ),
                                                 ListTile(
                                                   title: Text(carrito.nombre),
-                                                  subtitle:
-                                                      Text(carrito.descripcion),
+                                                  subtitle: Text(carrito.descripcion),
                                                   trailing: IconButton(
                                                     icon: const Icon(
                                                         Icons.delete),
@@ -93,8 +92,8 @@ class _CarritoCompraState extends State<CarritoCompra> {
                                                               ),
                                                               TextButton(
                                                                 onPressed: () {
-                                                                  //  carritoProvider.eliminarProdCart(
-                                                                  //   carrito); // Eliminar el producto del carrito
+                                                                //  carritoProvider.eliminarProdCart(
+                                                                   //   carrito); // Eliminar el producto del carrito
                                                                   Navigator.of(
                                                                           context)
                                                                       .pop(); // Cerrar el diálogo
