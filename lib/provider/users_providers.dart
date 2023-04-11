@@ -43,7 +43,7 @@ class UserProvider extends ChangeNotifier {
   Future loginUser(BuildContext context) async {
     if (_correo != '' && _password != '') {
       final response = await http.post(
-          Uri.parse('https://moshishop.up.railway.app/usuarios/login'),
+          Uri.parse('https://moshishopappi.fly.dev/Usuarios/login'),
           headers: <String, String>{
             'Content-type': 'application/json; charset=UTF-8'
           },
@@ -94,7 +94,7 @@ class UserProvider extends ChangeNotifier {
             Direccion: Direccion);
 
         final response = await http.post(
-          Uri.parse('https://moshishop.up.railway.app/usuarios/registro'),
+          Uri.parse('https://moshishopappi.fly.dev/usuarios/registro'),
           headers: <String, String>{
             'Content-type': 'application/json; charset=UTF-8'
           },

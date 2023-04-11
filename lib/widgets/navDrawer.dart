@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, recursive_getters, prefer_final_fields, avoid_print
+// ignore_for_file: file_names, recursive_getters, prefer_final_fields, avoid_print, unused_element
 
 import 'package:flutter/material.dart';
 import 'package:moshi_movil_app/provider/agregarAlCarrito_provider.dart';
@@ -29,15 +29,15 @@ class NavDraweState extends State<NavDrawer> {
   _getDrawerItemWidget(int pos) {
     switch (pos) {
       case 0:
-        return const HomePage();
+        return  const HomePage();
       case 1:
-        return const FavoritosPage();
+        //return const FavoritosScreen();
       case 2:
         return const CarritoCompra();
       case 3:
         return const PrefilPage();
       case 4:
-        return const SettingsPage();
+        //return const SettingsPage();
       case 5:
         return; //const LoginScreen();
     }
@@ -97,22 +97,22 @@ class NavDraweState extends State<NavDrawer> {
                 _onSelectItem(0);
               },
             ),
-            ListTile(
+           /* ListTile(
               title: const Text('Favoritos'),
-              leading: const Icon(Icons.star_border_purple500),
+              leading: const Icon(Icons.favorite_border_outlined),
               selected: (1 == _selectDrawerItem),
               selectedColor: Colors.deepPurpleAccent.shade200,
               onTap: () {
                 _onSelectItem(1);
               },
-            ),
+            ) */
             ListTile(
               title: const Text('Carrito de compras'),
               leading: const Icon(Icons.shopping_cart_rounded),
               selected: (2 == _selectDrawerItem),
               selectedColor: Colors.deepPurpleAccent.shade200,
               onTap: () {
-                carritoInfo.fechtCarrito(context);
+                carritoInfo.fetchCarrito(context);
               },
             ),
             const Divider(),
@@ -126,15 +126,16 @@ class NavDraweState extends State<NavDrawer> {
               },
             ),
             const Divider(),
-            ListTile(
-              title: const Text('Configuraciones'),
-              leading: const Icon(Icons.settings),
-              selected: (4 == _selectDrawerItem),
+            /*
+             ListTile(
+              title: const Text('Favoritos'),
+              leading: const Icon(Icons.favorite_border_outlined),
+              selected: (1 == _selectDrawerItem),
               selectedColor: Colors.deepPurpleAccent.shade200,
               onTap: () {
-                _onSelectItem(4);
+                _onSelectItem(1);
               },
-            ),
+            ) */
             ListTile(
               title: const Text('Cerrar sesion'),
               leading: const Icon(Icons.exit_to_app_rounded),
@@ -184,12 +185,14 @@ class _SearchDelegate extends SearchDelegate<String> {
     );
   }
 
-  void navigateToNextScreen(BuildContext context, String codigoProducto) {
+  void navigateToNextScreen(BuildContext context, String codigoProducto, String imagen, String nombre) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => AddCart(
           ProductoCodigo: codigoProducto,
+          imagen: imagen,
+          nombre: nombre,
         ),
       ),
     );
@@ -207,12 +210,8 @@ class _SearchDelegate extends SearchDelegate<String> {
             itemCount: searchQuery.length,
             itemBuilder: (context, index) {
               final producto = searchQuery[index];
-              return 
-              ListTile(
-                leading: const CircleAvatar(
-                  backgroundColor: Color.fromARGB(255, 180, 42, 222),
-                  backgroundImage: AssetImage('assets/img/logo.png'),
-                ),
+              return ListTile(
+                leading: Image.network(producto['imagen']),
                 title: Text(producto['nombre']),
                 subtitle: Text(producto['descripcion']),
                 trailing: Row(
@@ -221,7 +220,7 @@ class _SearchDelegate extends SearchDelegate<String> {
                     IconButton(
                       icon: const Icon(Icons.shopping_cart_checkout_outlined),
                       onPressed: () {
-                        navigateToNextScreen(context, producto['codigo']);
+                        navigateToNextScreen(context, producto['codigo'], producto['imagen'], producto['nombre']);
                       },
                     ),
                     IconButton(
@@ -230,7 +229,11 @@ class _SearchDelegate extends SearchDelegate<String> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ProductosPage(
+                                nombre: producto ['nombre'],
                                 ProductoCodigo: producto['codigo'],
+                                imagen: producto['imagen'],
+                               precio: producto['precio']
+
                               ),
                             ));
                       },
@@ -247,11 +250,10 @@ class _SearchDelegate extends SearchDelegate<String> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/img/pac-404.png',
+                  'assets/img/5-removebg-preview.png',
                   width: 300,
                   height: 300,
                 ),
-                const SizedBox(height: 10),
                 Text(
                   '${snapshot.error}',
                   textAlign: TextAlign.center,
@@ -269,7 +271,7 @@ class _SearchDelegate extends SearchDelegate<String> {
   //final AssetImage errorImage = const AssetImage('assets/img/trsite.gif');
   Future<List<dynamic>> buscarPorNombre(String nombre) async {
     final response = await http.get(Uri.parse(
-        'https://moshishop.up.railway.app/productos/findbyname?nombre=$query'));
+        'https://moshishopappi.fly.dev/productos/findbyname?nombre=$query'));
 
     if (response.statusCode == 200) {
       final searchQuery = json.decode(response.body);

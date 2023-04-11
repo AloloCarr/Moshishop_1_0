@@ -20,8 +20,8 @@ class ProductosReponseDtos {
       required this.precio,
       required this.codigo,
       required this.categoriaNombre,
-      required this.imagen
-      });
+      required this.imagen,
+      required this.descripcion});
 
   final String id;
   final String nombre;
@@ -30,28 +30,29 @@ class ProductosReponseDtos {
   final String codigo;
   final String categoriaNombre;
   final String imagen;
+  final String descripcion;
 
   factory ProductosReponseDtos.fromMap(Map<String, dynamic> json) =>
       ProductosReponseDtos(
-        id: json["id"],
-        nombre: json["nombre"],
-        cantidad: json["cantidad"],
-        precio: json["precio"],
-        codigo: json["codigo"],
-        categoriaNombre: json["CategoriaNombre"],
-        imagen: json["imagen"]
-      );
+          id: json["id"],
+          nombre: json["nombre"],
+          cantidad: json["cantidad"],
+          precio: json["precio"],
+          codigo: json["codigo"],
+          categoriaNombre: json["CategoriaNombre"],
+          imagen: json["imagen"],
+          descripcion: json["descripcion"]);
 
   factory ProductosReponseDtos.fromJson(Map<String, dynamic> json) =>
       ProductosReponseDtos(
-        id: json["id"],
-        nombre: json["nombre"],
-        cantidad: json["cantidad"],
-        precio: json["precio"],
-        codigo: json["codigo"],
-        categoriaNombre: json["CategoriaNombre"],
-         imagen: json["imagen"]
-      );
+          id: json["id"],
+          nombre: json["nombre"],
+          cantidad: json["cantidad"],
+          precio: json["precio"],
+          codigo: json["codigo"],
+          categoriaNombre: json["CategoriaNombre"],
+          imagen: json["imagen"],
+          descripcion: json["descripcion"]);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -60,6 +61,7 @@ class ProductosReponseDtos {
         "precio": precio,
         "codigo": codigo,
         "CategoriaNombre": categoriaNombre,
-        "imagen": imagen
+        "imagen": imagen,
+        "descripcion": descripcion
       };
 }

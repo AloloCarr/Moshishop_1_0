@@ -6,19 +6,29 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AddCart extends StatefulWidget {
   final String ProductoCodigo;
+  final String imagen;
+  final String nombre;
 
-  const AddCart({Key? key, required this.ProductoCodigo}) : super(key: key);
+  const AddCart(
+      {Key? key,
+      required this.ProductoCodigo,
+      required this.imagen,
+      required this.nombre})
+      : super(key: key);
   @override
   _AddCart createState() => _AddCart();
 }
 
 class _AddCart extends State<AddCart> {
   int quantity = 1;
-  Future<bool> agregarAlcarrito(int quantity, String ProductoCodigo) async {
+  bool isLoading = false;
+
+  Future<bool> agregarAlcarrito(
+      int quantity, String ProductoCodigo, String nombre) async {
     print("el producto seleccionado es: $ProductoCodigo");
     final preference = await SharedPreferences.getInstance();
     final response = await http.post(
-      Uri.parse('https://moshishop.up.railway.app/cart/agregar'),
+      Uri.parse('https://moshishopappi.fly.dev/cart/agregar'),
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': preference.getString('token')!
@@ -45,17 +55,45 @@ class _AddCart extends State<AddCart> {
     }
   }
 
-  void _handleAddButtomPressed() async {
-    final succes = await agregarAlcarrito(quantity, widget.ProductoCodigo);
-    if (succes) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Producto agregado exitosamente.'),
-      ));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Producto sin stock.'),
-      ));
-    }
+  void _handleBuyButtonPressed() async {
+    final success =
+        await agregarAlcarrito(quantity, widget.ProductoCodigo, widget.nombre);
+    _showDialog(success);
+  }
+
+  void _showDialog(bool success) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(success ? 'Se Agrego Al carrito' : 'Error'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              success
+                  ? Image(
+                      image: AssetImage(
+                          'assets/img/logo.png')) // Agrega la imagen si la compra fue exitosa
+                  : Image(
+                      image: AssetImage(
+                          'assets/img/logo.png')), // Agrega la imagen de error si no hay stock disponible
+              SizedBox(height: 8.0),
+              Text(success
+                  ? 'El producto se agrego al carrito exitosamente.'
+                  : 'Lo siento hubo un error al agregar el producto al carrito'),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cerrar'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -73,17 +111,28 @@ class _AddCart extends State<AddCart> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              width: 200,
-              height: 250,
+              width: 250,
+              height: 300,
               decoration: BoxDecoration(
-                color: Colors.purple,
-                borderRadius: BorderRadius.circular(100),
                 image: DecorationImage(
-                  image: AssetImage('assets/img/logo.png'),
+                  image: NetworkImage(widget.imagen),
                 ),
               ),
             ),
             SizedBox(height: 30),
+            Text(
+              'Producto: ${widget.nombre}',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold, // hace el texto en negrita
+                fontSize: 16,
+                fontStyle:
+                    FontStyle.normal, // aumenta el tamaño de fuente en 2 puntos
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
             Text(
               'Producto Codigo:  ${widget.ProductoCodigo}',
               textAlign: TextAlign.center,
@@ -100,6 +149,7 @@ class _AddCart extends State<AddCart> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(width: 16),
                 IconButton(
                   onPressed: () {
                     setState(() {
@@ -110,6 +160,7 @@ class _AddCart extends State<AddCart> {
                   },
                   icon: Icon(Icons.remove_circle_outline_outlined),
                 ),
+                SizedBox(width: 16),
                 Text(quantity.toString()),
                 SizedBox(width: 16),
                 IconButton(
@@ -123,10 +174,10 @@ class _AddCart extends State<AddCart> {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: 16,
             ),
             ElevatedButton(
-                onPressed: _handleAddButtomPressed,
+                onPressed: _handleBuyButtonPressed,
                 style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurpleAccent),
                 child: Text('Confirmar'))

@@ -13,13 +13,12 @@ class IconPerson extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: SizedBox(
-          height:SizeConfig.safeBlockSizeHorizontal(60) ,
-          width: SizeConfig.screenWidth,
-          child: Image.asset('assets/img/logo.png' )
-          ),
+            height: SizeConfig.safeBlockSizeHorizontal(50),
+            width: SizeConfig.screenWidth,
+            child: Image.asset('assets/img/logo.png')),
       ),
       
-      );
+    );
+
   }
 }
-

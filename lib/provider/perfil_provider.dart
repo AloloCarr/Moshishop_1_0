@@ -25,7 +25,7 @@ class _PerfilState extends State<Perfil> {
 
   Future fetchPerfil() async {
     final response = await http
-        .get(Uri.parse('https://moshishop.up.railway.app/usuarios/buscaruser'));
+        .get(Uri.parse('https://moshishopappi.fly.dev/usuarios/buscaruser'));
 
     if (response.statusCode == 200) {
       setState(() {

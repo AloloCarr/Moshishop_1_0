@@ -2,21 +2,30 @@
 import 'package:flutter/material.dart';
 import 'package:moshi_movil_app/provider/agregarAlCarrito_provider.dart';
 import 'package:moshi_movil_app/provider/compra_provider.dart';
+import 'package:moshi_movil_app/provider/favoritos_provider.dart';
 
 import 'package:moshi_movil_app/provider/productos_provider.dart';
+import 'package:moshi_movil_app/screens/detallesdeelproducto.dart';
 import 'package:moshi_movil_app/widgets/config_Responsive.dart';
 
 import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+Map<String, bool> favorites = {}; // mapa para almacenar los favoritos
+
+bool isLiked = false;
+
+class HomePage extends StatefulWidget {
   const HomePage({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    
     SizeConfig(context);
     return ChangeNotifierProvider(
       create: (context) => ProductosProvider()..fetchProductos(),
@@ -38,22 +47,50 @@ class HomePage extends StatelessWidget {
                           return Row(
                             children: [
                               ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(255, 180, 105, 193)),
+                                ),
                                 onPressed: () async {
-                                  var productos = await productosProvider
+                                  final productos =
+                                      await productosProvider.fetchProductos();
+                                },
+                                child: Text('TODOS'),
+                              ),
+                              SizedBox(width: 10),
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(255, 180, 105, 193)),
+                                ),
+                                onPressed: () async {
+                                  final productos = await productosProvider
                                       .obtenerProductosPorCategoria('pines');
                                 },
                                 child: Text('Pines'),
                               ),
                               SizedBox(width: 10),
                               ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(255, 180, 105, 193)),
+                                ),
                                 onPressed: () async {
-                                  var productos = await productosProvider
+                                  final productos = await productosProvider
                                       .obtenerProductosPorCategoria('juguete');
                                 },
                                 child: Text('Juguete'),
                               ),
                               SizedBox(width: 10),
                               ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(255, 180, 105, 193)),
+                                ),
                                 onPressed: () async {
                                   var productos = await productosProvider
                                       .obtenerProductosPorCategoria('taza');
@@ -62,6 +99,11 @@ class HomePage extends StatelessWidget {
                               ),
                               SizedBox(width: 10),
                               ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(255, 180, 105, 193)),
+                                ),
                                 onPressed: () async {
                                   var productos = await productosProvider
                                       .obtenerProductosPorCategoria('camisa');
@@ -70,6 +112,11 @@ class HomePage extends StatelessWidget {
                               ),
                               SizedBox(width: 10),
                               ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Color.fromARGB(255, 180, 105, 193)),
+                                ),
                                 onPressed: () async {
                                   var productos = await productosProvider
                                       .obtenerProductosPorCategoria('libro');
@@ -77,21 +124,6 @@ class HomePage extends StatelessWidget {
                                 child: Text('Libro'),
                               ),
                               SizedBox(width: 10),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  var productos = await productosProvider
-                                      .obtenerProductosPorCategoria('camisa');
-                                },
-                                child: Text('Camisa'),
-                              ),
-                              SizedBox(width: 10),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  var productos = await productosProvider
-                                      .obtenerProductosPorCategoria('posters');
-                                },
-                                child: Text('Posters'),
-                              ),
                             ],
                           );
                         },
@@ -101,110 +133,128 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               Consumer<ProductosProvider>(
-                  builder: (context, productoProvider, child) =>
-                      productoProvider.isLoanding
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Expanded(
-                              child: GridView.builder(
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 1),
-                                  itemCount: productoProvider.productos?.length,
-                                  itemBuilder: (context, index) {
-                                    final PROD =
-                                        productoProvider.productos?[index];
-                                    return Padding(
-                                        padding: const EdgeInsets.all(10.0),
+                builder: (context, productoProvider, child) => productoProvider
+                        .isLoanding
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Expanded(
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2),
+                          itemCount: productoProvider.productos?.length,
+                          itemBuilder: (context, index) {
+                            final PROD = productoProvider.productos?[index];
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: SizedBox(
+                                height: SizeConfig.blockSizeVertical(40),
+                                child: Card(
+                                  child: Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProductoDetails(
+                                                        producto: PROD!)),
+                                          );
+                                        },
                                         child: SizedBox(
-                                          height:
-                                              SizeConfig.blockSizeVertical(40),
-                                          child: Card(
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  margin: const EdgeInsets.all(
-                                                      20.0),
-                                                  width: 150,
-                                                  height: 150,
-                                                  decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: NetworkImage(
-                                                              '${PROD?.imagen}'))),
-                                                ),
-                                                ListTile(
-                                                  title:
-                                                      Text('${PROD?.nombre}'),
-                                                  subtitle: Column(
-                                                    children: [
-                                                      Text(
-                                                          'Precio: ${PROD?.precio}'),
-                                                      Text(
-                                                          'Categoria: ${PROD?.categoriaNombre}'),
-                                                    ],
-                                                  ),
-                                                  trailing: IconButton(
-                                                    icon: Icon(Icons
-                                                        .favorite_border_outlined),
-                                                    onPressed: () {
-                                                      
-                                                    },
+                                          height: 150.0,
+                                          width: 150.0,
+                                          child: Stack(
+                                            children: [
+                                              Container(
+                                                margin:
+                                                    const EdgeInsets.all(20.0),
+                                                width: 100,
+                                                height: 100,
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        '${PROD?.imagen}'),
+                                                    fit: BoxFit.cover,
                                                   ),
                                                 ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  ProductosPage(
-                                                                ProductoCodigo:
-                                                                    '${PROD?.codigo}',
-                                                              ),
-                                                            ));
-                                                      },
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor: Colors
-                                                            .deepPurpleAccent, // Establece el color de fondo
+                                              ),
+                                              Positioned(
+                                                bottom: 0,
+                                                left: 0,
+                                                right: 0,
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      '${PROD?.nombre}',
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 16.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                       ),
-                                                      child:
-                                                          Text('Comprar Ahora'),
+                                                      textAlign:
+                                                          TextAlign.center,
                                                     ),
                                                     SizedBox(
-                                                        width:
-                                                            20), // Espacio entre los botones
-                                                    ElevatedButton(
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (context) =>
-                                                                    AddCart(
-                                                                        ProductoCodigo:
-                                                                            '${PROD?.codigo}')));
-                                                      },
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor: Colors
-                                                            .deepPurpleAccent, // Establece el color de fondo
-                                                      ),
+                                                      width: 100.0,
                                                       child: Text(
-                                                          'Añadir a carrito'),
+                                                        'Precio: ${PROD?.precio}',
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 15.0,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                      ),
                                                     ),
                                                   ],
-                                                )
-                                              ],
-                                            ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ));
-                                  }),
-                            )),
+                                        ),
+                                      ),
+
+                                      /* Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductosPage(
+                                                    ProductoCodigo:
+                                                        '${PROD?.codigo}',
+                                                    imagen: '${PROD?.imagen}',
+                                                    precio: '${PROD?.precio}',
+                                                    nombre: '${PROD?.nombre}',
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  Colors.deepPurpleAccent,
+                                            ),
+                                            child: Text('Comprar Ahora'),
+                                          ),                                        
+                                        ],
+                                      )*/
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+              ),
             ],
           ),
         ),
